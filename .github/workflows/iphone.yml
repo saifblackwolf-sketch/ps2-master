@@ -1,32 +1,29 @@
 name: Build PCSX2 IPA
 on: [push, workflow_dispatch]
+name: Build PCSX2 IPA
+on: [push, workflow_dispatch]
 
 jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
       - name: Install Dependencies
-        run: |
-          brew install cmake ninja
+        run: brew install cmake ninja
 
-      - name: Setup iOS Environment
-        run: |
-          sudo xcode-select -s /Applications/Xcode.app
-
-      - name: Build and Archive
+      - name: Build
         run: |
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../cmake/ios.toolchain.cmake -DPLATFORM=OS64
+          cmake .. -GNinja
           ninja
 
-      - name: Upload IPA
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: PCSX2-IPA
-          path: build/*.ipa
-X
+          path: build/
