@@ -1,4 +1,4 @@
-name: Build-PCSX2-iOS
+name: Build-PCSX2-Final
 on: [push, workflow_dispatch]
 
 jobs:
@@ -9,18 +9,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          fetch-depth: 0
 
-      - name: Dependencies
+      - name: Install Tools
         run: brew install cmake ninja pkg-config
 
       - name: Configure and Build
         run: |
-          SRC_DIR=$(find . -name "CMakeLists.txt" -print -quit | xargs dirname)
-          cmake -S "$SRC_DIR" -B build -G Ninja \
+          cmake -B build -G Ninja \
             -DCMAKE_SYSTEM_NAME=iOS \
             -DCMAKE_OSX_SYSROOT=iphoneos \
             -DCMAKE_OSX_ARCHITECTURES=arm64 \
+            -DCMAKE_MODULE_PATH="./cmake" \
             -DENABLE_TESTS=OFF \
             -DUSE_VULKAN=OFF
           cmake --build build --config Release
