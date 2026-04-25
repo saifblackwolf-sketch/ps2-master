@@ -8,8 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-X1X9YX'X* X'YY submodules: recursive # X,YX( YY X'YYYY X) X'YX6X1X1Y X) YYYX-X'YY
-
+          submodules: recursive
 
       - name: Build App
         run: |
@@ -27,9 +26,6 @@ X1X9YX'X* X'YY submodules: recursive # X,YX( YY X'YYYY X) X'YX6X1X1Y X) YYYX-X'Y
       - name: Prepare Artifact
         run: |
           mkdir -p Payload
-          # X'YX(X-X+ X9Y
- X'YYYYY .app X6X9Y'YYX,YX/ X'YX5X-Y
-X-
           find build -name "*.app" -exec cp -r {} Payload/ \;
           zip -r Alune.ipa Payload
 
