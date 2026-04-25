@@ -20,9 +20,10 @@ jobs:
             -DCMAKE_SYSTEM_NAME=iOS \
             -DCMAKE_OSX_SYSROOT=iphoneos \
             -DCMAKE_OSX_ARCHITECTURES=arm64 \
+            -DENABLE_TESTS=OFF \
             -DUSE_VULKAN=OFF \
-            -DENABLE_TESTS=OFF
+            -DUSE_DISCORD_PRESENCE=OFF
 
       - name: Compile
-        run: cmake --build build --config Release
+        run: cmake --build build --config Release --parallel 4
 
