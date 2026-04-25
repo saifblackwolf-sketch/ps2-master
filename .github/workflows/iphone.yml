@@ -12,27 +12,26 @@ jobs:
 
       - name: Build
         run: |
-          xcodebuild -project Alune.xcodeproj \
-            -scheme Alune \
-            -configuration Release \
-            -sdk iphoneos \
-            -derivedDataPath build \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY="" \
-            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
-            WARNING_CFLAGS="-Wno-error" \
+          xcodebuild -project Alune.xcodeproj 
+            -scheme Alune 
+            -configuration Release 
+            -sdk iphoneos 
+            -derivedDataPath build 
+            CODE_SIGNING_ALLOWED=NO 
+            CODE_SIGNING_REQUIRED=NO 
+            CODE_SIGN_IDENTITY="" 
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO 
+            WARNING_CFLAGS="-Wno-error" 
             build
 
       - name: Package
         run: |
           mkdir -p Payload
-          find build -name "*.app" -exec cp -r {} Payload/ \;
+          find build -name "*.app" -exec cp -r {} Payload/ ;
           zip -r Alune.ipa Payload
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: Alune-IPA
-          path: Alune.ipa
-
+          path: Alune.
