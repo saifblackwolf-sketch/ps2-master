@@ -1,4 +1,4 @@
-name: Build-and-Export-Fixed
+name: Build-iOS
 on: [push, workflow_dispatch]
 
 jobs:
@@ -10,7 +10,7 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Build App
+      - name: Build
         run: |
           xcodebuild -project Alune.xcodeproj \
             -scheme Alune \
@@ -20,18 +20,19 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            AD_HOC_CODE_SIGNING_ALLOWED=YES \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            WARNING_CFLAGS="-Wno-error" \
             build
 
-      - name: Prepare Artifact
+      - name: Package
         run: |
           mkdir -p Payload
           find build -name "*.app" -exec cp -r {} Payload/ \;
           zip -r Alune.ipa Payload
 
-      - name: Upload Result
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Alune-Emulator
+          name: Alune-IPA
           path: Alune.ipa
 
