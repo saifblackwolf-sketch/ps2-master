@@ -1,4 +1,4 @@
-name: Build-PCSX2-Final
+name: Build-iOS-Xcode
 on: [push, workflow_dispatch]
 
 jobs:
@@ -7,21 +7,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          path: '.'
 
-      - name: Install Tools
-        run: brew install cmake ninja pkg-config
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
 
-      - name: Configure and Build
+      - name: Build IPA
         run: |
-          cmake -S . -B build -G Ninja \
-            -DCMAKE_SYSTEM_NAME=iOS \
-            -DCMAKE_OSX_SYSROOT=iphoneos \
-            -DCMAKE_OSX_ARCHITECTURES=arm64 \
-            -DCMAKE_MODULE_PATH="./cmake" \
-            -DENABLE_TESTS=OFF \
-            -DUSE_VULKAN=OFF
-          cmake --build build --config Release
-
+          xcodebuild -project Alune.xcodeproj \
+            -scheme Alune \
+            -configuration Release \
+            -sdk iphoneos \
+            -allowProvisioningUpdates \
+            build
