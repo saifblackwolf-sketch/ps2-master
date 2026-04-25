@@ -1,19 +1,13 @@
-name: Build PCSX2 IPA
-on: [push, workflow_dispatch]
-name: Build PCSX2 IPA
+name: Build-PCSX2
 on: [push, workflow_dispatch]
 
 jobs:
   build:
     runs-on: macos-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
-
-      - name: Install Dependencies
-        run: brew install cmake ninja
 
       - name: Build
         run: |
@@ -22,8 +16,3 @@ jobs:
           cmake .. -GNinja
           ninja
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: PCSX2-IPA
-          path: build/
