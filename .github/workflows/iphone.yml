@@ -1,4 +1,4 @@
-name: Build-and-Export
+name: Build-and-Export-Fixed
 on: [push, workflow_dispatch]
 
 jobs:
@@ -7,6 +7,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+X1X9YX'X* X'YY submodules: recursive # X,YX( YY X'YYYY X) X'YX6X1X1Y X) YYYX-X'YY
+
 
       - name: Build App
         run: |
@@ -14,20 +17,25 @@ jobs:
             -scheme Alune \
             -configuration Release \
             -sdk iphoneos \
+            -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES \
             build
 
       - name: Prepare Artifact
         run: |
-          mkdir -p payload/Payload
-          cp -r build/Release-iphoneos/Alune.app payload/Payload/
-          cd payload && zip -r ../Alune.ipa .
+          mkdir -p Payload
+          # X'YX(X-X+ X9Y
+ X'YYYYY .app X6X9Y'YYX,YX/ X'YX5X-Y
+X-
+          find build -name "*.app" -exec cp -r {} Payload/ \;
+          zip -r Alune.ipa Payload
 
       - name: Upload Result
         uses: actions/upload-artifact@v4
         with:
-          name: Alune-Emulator-Unsigned
+          name: Alune-Emulator
           path: Alune.ipa
 
