@@ -5,22 +5,28 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Setup Dependencies
+      - name: Install Dependencies
         run: brew install cmake ninja pkg-config
 
       - name: Configure and Build
         run: |
-          cmake -S . -B build -G Ninja \
+          # X'X(X-X+ X9Y
+ X'YYX,YX/ X'YX0Y Y X-X*Y
+ X'YX%X9X/X'X/X'X* X'X/X.YY_dir=$(find . -name "CMakeLists.txt" -print -quit | xargs dirname)
+          cd "$cmake_dir"
+          
+          cmake -B build -G Ninja \
             -DCMAKE_SYSTEM_NAME=iOS \
             -DCMAKE_OSX_SYSROOT=iphoneos \
             -DCMAKE_OSX_ARCHITECTURES=arm64 \
             -DENABLE_TESTS=OFF \
             -DUSE_VULKAN=OFF
+            
           cmake --build build --config Release
-
+9YY	 YYY
