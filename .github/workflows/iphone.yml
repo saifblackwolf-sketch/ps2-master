@@ -14,17 +14,13 @@ jobs:
       - name: Dependencies
         run: brew install cmake ninja pkg-config
 
-      - name: Build
+      - name: Configure and Build
         run: |
-          # X'YX/X.Y YX#Y
- YX,YX/ Y X-X*Y X'X* X'YYX9YY YYYX4X1X9 X'YX#X5YY
-X)
-          find . -name "CMakeLists.txt" -exec dirname {} \; | xargs -I {} sh -c 'cd {} && \
-          cmake -B build -G Ninja \
+          SRC_DIR=$(find . -name "CMakeLists.txt" -print -quit | xargs dirname)
+          cmake -S "$SRC_DIR" -B build -G Ninja \
             -DCMAKE_SYSTEM_NAME=iOS \
             -DCMAKE_OSX_SYSROOT=iphoneos \
             -DCMAKE_OSX_ARCHITECTURES=arm64 \
             -DENABLE_TESTS=OFF \
-            -DUSE_VULKAN=OFF && \
-          cmake --build build --config Release'
-
+            -DUSE_VULKAN=OFF
+          cmake --build build --config Release
