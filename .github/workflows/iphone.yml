@@ -1,4 +1,4 @@
-name: Build-iOS-Xcode
+name: Build-iOS-No-Sign
 on: [push, workflow_dispatch]
 
 jobs:
@@ -8,14 +8,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode.app
-
-      - name: Build IPA
+      - name: Build IPA (No Signing)
         run: |
           xcodebuild -project Alune.xcodeproj \
             -scheme Alune \
             -configuration Release \
             -sdk iphoneos \
-            -allowProvisioningUpdates \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_ENTITLEMENTS="" \
+            GCC_PREPROCESSOR_DEFINITIONS='$inherited SIGNING_DISABLED=1' \
             build
+
