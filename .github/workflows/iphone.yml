@@ -1,4 +1,4 @@
-name: Build-iOS-No-Sign
+name: Build-and-Export
 on: [push, workflow_dispatch]
 
 jobs:
@@ -8,7 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build IPA (No Signing)
+      - name: Build App
         run: |
           xcodebuild -project Alune.xcodeproj \
             -scheme Alune \
@@ -17,7 +17,17 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            CODE_SIGN_ENTITLEMENTS="" \
-            GCC_PREPROCESSOR_DEFINITIONS='$inherited SIGNING_DISABLED=1' \
             build
+
+      - name: Prepare Artifact
+        run: |
+          mkdir -p payload/Payload
+          cp -r build/Release-iphoneos/Alune.app payload/Payload/
+          cd payload && zip -r ../Alune.ipa .
+
+      - name: Upload Result
+        uses: actions/upload-artifact@v4
+        with:
+          name: Alune-Emulator-Unsigned
+          path: Alune.ipa
 
