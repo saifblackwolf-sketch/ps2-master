@@ -14,16 +14,13 @@ jobs:
       - name: Setup Dependencies
         run: brew install cmake ninja pkg-config
 
-      - name: Configure for iOS
+      - name: Configure and Build
         run: |
-          cmake -B build -G Ninja \
+          cmake -S . -B build -G Ninja \
             -DCMAKE_SYSTEM_NAME=iOS \
             -DCMAKE_OSX_SYSROOT=iphoneos \
             -DCMAKE_OSX_ARCHITECTURES=arm64 \
             -DENABLE_TESTS=OFF \
-            -DUSE_VULKAN=OFF \
-            -DUSE_DISCORD_PRESENCE=OFF
-
-      - name: Compile
-        run: cmake --build build --config Release --parallel 4
+            -DUSE_VULKAN=OFF
+          cmake --build build --config Release
 
