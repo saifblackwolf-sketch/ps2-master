@@ -1,4 +1,4 @@
-name: Build-PCSX2
+name: Build-PCSX2-iOS
 on: [push, workflow_dispatch]
 
 jobs:
@@ -8,18 +8,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: 'recursive'
+          submodules: recursive
           fetch-depth: 0
 
-      - name: Dependencies
+      - name: Setup Dependencies
         run: brew install cmake ninja pkg-config
 
-      - name: Configure and Build
+      - name: Configure for iOS
         run: |
           cmake -B build -G Ninja \
             -DCMAKE_SYSTEM_NAME=iOS \
             -DCMAKE_OSX_SYSROOT=iphoneos \
             -DCMAKE_OSX_ARCHITECTURES=arm64 \
-            -DUSE_VULKAN=ON
-          cmake --build build
+            -DUSE_VULKAN=OFF \
+            -DENABLE_TESTS=OFF
+
+      - name: Compile
+        run: cmake --build build --config Release
 
