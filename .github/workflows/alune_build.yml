@@ -23,7 +23,22 @@ jobs:
             AD_HOC_CODE_SIGNING_ALLOWED=YES \
             COMPILER_INDEX_STORE_ENABLE=NO \
             SWIFT_COMPILATION_MODE=wholemodule \
+            SWIFT_OPTIMIZATION_LEVEL="-O" \
+            ARCHS=arm64 \
             GCC_TREAT_WARNINGS_AS_ERRORS=NO \
             WARNING_CFLAGS="-Wno-error" \
             MTL_ENABLE_DEBUG_INFO=NO \
             build
+
+      - name: Create Payload
+        run: |
+          mkdir -p Payload
+          find build -name "*.app" -exec cp -r {} Payload/ \;
+          zip -r Alune.ipa Payload
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Alune-IPA-Package
+          path: Alune.ipa
+
