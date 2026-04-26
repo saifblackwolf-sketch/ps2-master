@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -11,7 +11,7 @@ jobs:
           submodules: recursive
 
       - name: Select Xcode Version
-        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
 
       - name: Build IPA
         run: |
@@ -25,8 +25,8 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             AD_HOC_CODE_SIGNING_ALLOWED=YES \
             COMPILER_INDEX_STORE_ENABLE=NO \
-            SWIFT_COMPILATION_MODE=wholemodule \
             SWIFT_OPTIMIZATION_LEVEL="-O" \
+            SWIFT_COMPILATION_MODE=wholemodule \
             GCC_TREAT_WARNINGS_AS_ERRORS=NO \
             WARNING_CFLAGS="-Wno-error" \
             MTL_ENABLE_DEBUG_INFO=NO \
@@ -43,3 +43,4 @@ jobs:
         with:
           name: Alune-IPA-Package
           path: Alune.ipa
+
