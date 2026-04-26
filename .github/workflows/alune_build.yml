@@ -10,6 +10,9 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Select Xcode Version
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+
       - name: Build IPA
         run: |
           xcodebuild -project Alune.xcodeproj \
@@ -24,7 +27,6 @@ jobs:
             COMPILER_INDEX_STORE_ENABLE=NO \
             SWIFT_COMPILATION_MODE=wholemodule \
             SWIFT_OPTIMIZATION_LEVEL="-O" \
-            ARCHS=arm64 \
             GCC_TREAT_WARNINGS_AS_ERRORS=NO \
             WARNING_CFLAGS="-Wno-error" \
             MTL_ENABLE_DEBUG_INFO=NO \
@@ -41,4 +43,3 @@ jobs:
         with:
           name: Alune-IPA-Package
           path: Alune.ipa
-
