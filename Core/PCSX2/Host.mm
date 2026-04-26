@@ -1,3 +1,8 @@
+#include <thread>
+#include <version>
+#if defined(__APPLE__) && !defined(__cpp_lib_jthread)
+namespace std { using jthread = std::thread; }
+#endif
 //
 //  Host.mm
 //  Alune
