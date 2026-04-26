@@ -1,0 +1,43 @@
+name: Alune-Final-Build
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build IPA
+        run: |
+          xcodebuild -project Alune.xcodeproj \
+            -scheme Alune \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES \
+            ENABLE_USER_SCRIPT_SANDBOXING=NO \
+            COMPILER_INDEX_STORE_ENABLE=NO \
+            SWIFT_COMPILATION_MODE=wholemodule \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            WARNING_CFLAGS="-Wno-error" \
+            MTL_ENABLE_DEBUG_INFO=NO \
+            build
+
+      - name: Create Payload
+        run: |
+          mkdir -p Payload
+          find build -name "*.app" -exec cp -r {} Payload/ \;
+          zip -r Alune.ipa Payload
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Alune-IPA-Package
+          path: Alune.ipa
+
